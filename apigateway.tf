@@ -68,30 +68,6 @@ resource "aws_apigatewayv2_route" "lambda1" {  # Change the resource name to "la
   }
 }
 
-resource "aws_apigatewayv2_route" "lambda2" {  # Change the resource name to "lambda2"
-  for_each  = local.routes
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "${each.value.http_verb} ${each.value.path}"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value.name].id}"
-
-  lifecycle {
-    ignore_changes = [target]  # Ignore changes to target attribute during retries
-  }
-
-  provisioner "local-exec" {
-    command = "sleep 30"  # Wait for 30 seconds before retrying
-    when    = "create"    # Ensure this line is in quotes
-  }
-}
-
-resource "aws_apigatewayv2_route" "lambda3" {  # Change the resource name to "lambda3"
-  for_each  = local.routes
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "${each.value.http_verb} ${each.value.path}"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value.name].id}"
-}
-
-
 
 ######################################################################
 

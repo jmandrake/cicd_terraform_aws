@@ -1,8 +1,10 @@
 data "archive_file" "lambda" {
-  type        = "zip"
-  source_dir  = "${path.module}/api"
-  output_path = "${path.module}/zip/api.zip"
+  type              = "zip"
+  source_dir        = "${path.module}/api"
+  output_path       = "${path.module}/zip/api.zip"
+  output_base64sha256 = false
 }
+
 
 resource "aws_s3_object" "lambda" {
   bucket = var.aws_s3_bucket
