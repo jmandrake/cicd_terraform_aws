@@ -21,8 +21,8 @@ resource "aws_s3_object" "lambda" {
 resource "aws_lambda_function" "lambda" {
   for_each         = local.routes
   function_name    = "${var.lambda_function_name_prefix}-${each.value.name}"
-  s3_bucket        = var.aws_s3_bucket
-  s3_key           = aws_s3_object.lambda.key
+  s3_bucket        = "api-lambda-dynamodb-demo"
+  s3_key           = "api.zip"
   runtime          = "python3.9"  # Change the runtime to Python 3.9
   handler          = "lambda_handler"  # Use the same handler function for all Lambda functions
   role             = aws_iam_role.lambda[each.value.name].arn
