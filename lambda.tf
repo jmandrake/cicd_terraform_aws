@@ -1,3 +1,4 @@
+
 resource "null_resource" "create_zip" {
   triggers = {
     always_run = "${timestamp()}"  # Ensure the provisioner always runs
@@ -5,11 +6,14 @@ resource "null_resource" "create_zip" {
 
   provisioner "local-exec" {
     command = <<-EOT
+      mkdir -p ${path.module}/zip
       cd ${path.module}/api
-      zip -r ${path.module}/zip/api.zip .
+      zip -r ../zip/api.zip .
     EOT
   }
 }
+
+
 
 
 resource "aws_s3_object" "lambda" {
