@@ -1,16 +1,21 @@
-data "archive_file" "lambda" {
-  type              = "zip"
-  source_dir        = "${path.module}/api"
-  output_path       = "${path.module}/zip/api.zip"
-  output_base64sha256 = false
-}
+resource "null_resource" "create_zip" {
+  triggers = {
+    always_run = "${timestamp()}"  # Ensure the provisioner always runs
+  }
 
+  provisioner "local-exec" {
+    command = <<-EOT
+      cd ${path.module}/api
+      zip -r ../zip/api.zip .
+    EOT
+  }
+}
 
 resource "aws_s3_object" "lambda" {
   bucket = var.aws_s3_bucket
   key    = "api.zip"
-  source = data.archive_file.lambda.output_path
-  etag   = filemd5(data.archive_file.lambda.output_path)
+  source = "${path.module}/zip/api.zip"
+  etag   = filemd5("${path.module}/zip/api.zip")
 }
 
 resource "aws_lambda_function" "lambda" {
