@@ -25,7 +25,6 @@ resource "aws_lambda_function" "lambda" {
   s3_key           = aws_s3_object.lambda.key
   runtime          = "python3.9"  # Change the runtime to Python 3.9
   handler          = "lambda_handler"  # Use the same handler function for all Lambda functions
-  source_code_hash = data.archive_file.lambda.output_base64sha256
   role             = aws_iam_role.lambda[each.value.name].arn
   architectures    = ["arm64"]
 
@@ -35,6 +34,7 @@ resource "aws_lambda_function" "lambda" {
     }
   }
 }
+
 
 resource "aws_lambda_permission" "lambda" {
   for_each      = local.routes
