@@ -1,8 +1,22 @@
 # cicd_terraform_aws
-Demo project for CICD with Github Actions using Terraform and AWS
+Demo project for CICD with Github Actions using Terraform and AWS.
 
+This demo was adapted from the original files (see below for credits) 
+
+## Changes:
+
+- Edited the Terraform template files to use a set of python files in the /api folder (originally Nodejs file).
+- The github actions workflow file deploy.yaml was changed to use python 3.9.
+- Added a .terraformignore to prevent further modifications to the API Gateway with each deployment
+- Modified the lambda.tf file to zip the files correctly for my deployment example
+- Set the function name for each lambda function dynamically in lambda.tf
+- Set the handler for each lambda function dynamically to target the correct handler function
+
+Note: when you deploy the dynamodb table, it will be set as "Provisioned" instead of "On Demand". Make sure you're aware of the billing implications.
+
+
+Credits:
 https://github.com/aaronwht/api-gateway-lamdba-dynamodb
-
 
 # Terraform managed API Gateway, Lambda, and DynamoDB
 
