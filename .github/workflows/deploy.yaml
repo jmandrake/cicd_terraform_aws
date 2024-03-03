@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'api/**'  # Trigger deployment only when changes occur in the 'api' directory
   pull_request:
     branches:
       - main
@@ -20,19 +22,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
+
+      - name: Install Python
+        uses: actions/setup-python@v2
         with:
-          node-version: "20.x"
-      - run: |
-          npm i -D typescript ts-loader webpack webpack-cli
-          cd api && npm ci
-          # tsc
+          python-version: '3.x' # Ensure Python 3.x is installed
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt  # If you have dependencies
+          # Modify this to install any Python dependencies you have
+
+      - name: Package Lambda Code
+        run: |
+          cd api
+          zip -r ../zip/api.zip .
           cd ..
-          mkdir zip
-          zip -r zip/api.zip api
-        env:
-          CI: true
+        # Ensure your Python Lambda code resides in the 'api' directory
+
       - name: Push Zip to S3
         uses: jakejarvis/s3-sync-action@v0.3.1
         env:
@@ -49,7 +56,8 @@ jobs:
           terraform fmt
           terraform init -upgrade
 
-      - name: Terraform Apply
+      - name: Selective Terraform Apply
+        if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'api/')
         run: terraform apply -auto-approve
         env:
           TF_VAR_aws_s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
