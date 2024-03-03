@@ -18,16 +18,6 @@ variable "lambda_function_name_prefix" {
   default     = "demo_lambda"  # Update this to your desired prefix
 }
 
-variable "lambda_python_files" {
-  type = map(string)
-  default = {
-    "index"          = "index_lambda.py"
-    "questions"      = "questions_lambda.py"
-    "question-post"  = "question_post_lambda.py"
-    "question-delete" = "question_delete_lambda.py"
-  }
-}
-
 locals {
   routes = {
     "index" : {

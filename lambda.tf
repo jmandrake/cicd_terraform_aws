@@ -29,7 +29,7 @@ resource "aws_lambda_function" "lambda" {
   s3_bucket        = "api-lambda-dynamodb-demo"
   s3_key           = "api.zip"
   runtime          = "python3.9"  # Change the runtime to Python 3.9
-  handler          = "${each.value.name}_lambda.lambda_handler"  # Use specific handler for each lambda
+  handler          = "${each.value.name}.lambda_handler"  # Use specific handler for each lambda
   role             = aws_iam_role.lambda[each.value.name].arn
   architectures    = ["arm64"]
 
