@@ -1,6 +1,6 @@
 import json
 import os
-import fxAddressCheck as fx
+import index as fx
 
 
 os.environ['AWS_PROFILE'] = "default"
@@ -8,14 +8,14 @@ os.environ['AWS_DEFAULT_REGION'] = "us-east-1"
 
 os.environ['apiKey'] = "xxxxxxxxxxxxx"
 os.environ['apiUrl'] = "https://api.addressy.com/Capture/Interactive/Retrieve/v1.00/json3.ws"
-os.environ['userId'] = "jmandrake"
+os.environ['userId'] = "xxxxxx"
 
 
 def main():
     context = None
 
     message = {
-        "orderId": "F7E456541",
+        "orderId": "123123",
         "requestType": "Address",
         "requestId": {
                         "partition": "id-AddressCheck-001",
