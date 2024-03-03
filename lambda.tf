@@ -6,10 +6,11 @@ resource "null_resource" "create_zip" {
   provisioner "local-exec" {
     command = <<-EOT
       cd ${path.module}/api
-      zip -r ../zip/api.zip .
+      zip -r ${path.module}/zip/api.zip .
     EOT
   }
 }
+
 
 resource "aws_s3_object" "lambda" {
   bucket = var.aws_s3_bucket
