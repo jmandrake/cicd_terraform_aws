@@ -1,4 +1,6 @@
 # cicd_terraform_aws
+[![terraform-deploy](https://github.com/jmandrake/cicd_terraform_aws/actions/workflows/deploy.yaml/badge.svg)](https://github.com/jmandrake/cicd_terraform_aws/actions/workflows/deploy.yaml)
+
 Demo project for CICD with Github Actions using Terraform and AWS.
 
 This demo was adapted from the original files (see below for credits) 
