@@ -10,6 +10,7 @@ variable "aws_region" {
 
 variable "aws_s3_bucket" {
   description = "S3 Bucket for Zip"
+  default = "api-lambda-dynamodb-demo"
 }
 
 variable "lambda_function_name_prefix" {
