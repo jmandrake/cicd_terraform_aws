@@ -19,8 +19,6 @@ provider "aws" {
 resource "aws_dynamodb_table" "questions" {
   name           = "questions"
   billing_mode   = "PAY_PER_REQUEST" # PAY_PER_REQUEST or PROVISIONED
-  read_capacity  = 1
-  write_capacity = 1
   hash_key       = "id"
 
   attribute {
