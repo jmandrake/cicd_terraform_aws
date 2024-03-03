@@ -36,8 +36,8 @@ jobs:
       - name: Package Lambda Code
         run: |
           cd api
+          mkdir -p ../zip  # Ensure the zip directory exists
           zip -r ../zip/api.zip .
-          cd ..
         # Ensure your Python Lambda code resides in the 'api' directory
 
       - name: Push Zip to S3
@@ -56,11 +56,10 @@ jobs:
           terraform fmt
           terraform init -upgrade
 
-      - name: Selective Terraform Apply
+      - name: Selective Terraform Apply for Lambda
+        if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'api/')
         run: |
-          terraform apply -auto-approve 
-          ### Only apply the changes to the Lambda function
-          # terraform apply -auto-approve -target=aws_lambda_function.lambda
+          terraform apply -auto-approve
         env:
           TF_VAR_aws_s3_bucket: ${{ secrets.AWS_S3_BUCKET }}
           TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
