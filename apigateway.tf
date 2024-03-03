@@ -61,7 +61,45 @@ resource "aws_apigatewayv2_route" "lambda" {
 
   provisioner "local-exec" {
     command = "sleep 30"  # Wait for 30 seconds before retrying
-    when    = "create"    # Only execute the provisioner on resource creation
+    when    = create    # Remove quotes around "create"
+  }
+
+  # Retry block should not be placed here
+}
+
+# Retry block should be placed outside of the resource block
+# Add a retry provisioner to retry the resource creation in case of conflict
+resource "aws_apigatewayv2_route" "lambda" {
+  for_each  = local.routes
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "${each.value.http_verb} ${each.value.path}"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value.name].id}"
+
+  lifecycle {
+    ignore_changes = [target]  # Ignore changes to target attribute during retries
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 30"  # Wait for 30 seconds before retrying
+    when    = "create"    # This line should be in quotes
+  }
+}
+
+# Retry block outside of the resource block
+# Retry block to retry the creation in case of conflict
+resource "aws_apigatewayv2_route" "lambda" {
+  for_each  = local.routes
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "${each.value.http_verb} ${each.value.path}"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value.name].id}"
+
+  lifecycle {
+    ignore_changes = [target]  # Ignore changes to target attribute during retries
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 30"  # Wait for 30 seconds before retrying
+    when    = "create"    # Ensure this line is in quotes
   }
 
   # Retry block to retry the creation in case of conflict
@@ -70,6 +108,7 @@ resource "aws_apigatewayv2_route" "lambda" {
     delay    = 10  # Delay in seconds between retries
   }
 }
+
 
 resource "aws_cloudwatch_log_group" "api_gw" {
   name              = "/aws/api_gw/${aws_apigatewayv2_api.api.name}"
