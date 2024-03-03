@@ -64,7 +64,7 @@ resource "aws_apigatewayv2_route" "lambda1" {  # Change the resource name to "la
 
   provisioner "local-exec" {
     command = "sleep 30"  # Wait for 30 seconds before retrying
-    when    = "create"    # Ensure this line is in quotes
+    when    = create 
   }
 }
 
