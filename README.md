@@ -14,7 +14,7 @@ This demo was adapted from the original files (see below for credits) to deploy 
 - Set the function name for each lambda function dynamically in lambda.tf
 - Set the handler for each lambda function dynamically to target the correct handler function
 
-Note: when you deploy the dynamodb table, it will be set as "Provisioned" instead of "On Demand". Make sure you're aware of the billing implications.
+Note: when you deploy the dynamodb table, you can set it to "Provisioned" instead of "On Demand" -- see the main.tf file where you can select either PAY_PER_REQUEST or PROVISIONED. Make sure you're aware of the billing implications.
 
 
 Credits:
