@@ -54,6 +54,21 @@ resource "aws_apigatewayv2_route" "lambda" {
   api_id    = aws_apigatewayv2_api.api.id
   route_key = "${each.value.http_verb} ${each.value.path}"
   target    = "integrations/${aws_apigatewayv2_integration.lambda[each.value.name].id}"
+
+  lifecycle {
+    ignore_changes = [target]  # Ignore changes to target attribute during retries
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 30"  # Wait for 30 seconds before retrying
+    when    = "create"    # Only execute the provisioner on resource creation
+  }
+
+  # Retry block to retry the creation in case of conflict
+  retry {
+    attempts = 3
+    delay    = 10  # Delay in seconds between retries
+  }
 }
 
 resource "aws_cloudwatch_log_group" "api_gw" {
