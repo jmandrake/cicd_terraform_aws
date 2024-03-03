@@ -57,10 +57,7 @@ jobs:
           terraform init -upgrade
 
       - name: Selective Terraform Apply
-        # Only run the terraform apply when changes occur in the 'api' directory
-        # if: github.event_name == 'push' && contains(github.event.head_commit.modified, 'api/')
         run: |
-          ### Apply all changes
           terraform apply -auto-approve 
           ### Only apply the changes to the Lambda function
           # terraform apply -auto-approve -target=aws_lambda_function.lambda
