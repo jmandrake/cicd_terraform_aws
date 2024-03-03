@@ -1,9 +1,9 @@
-# cicd_terraform_aws
+# cicd_terraform_aws: Deploy AWS Lambda Functions with Terraform and Github Actions
 [![terraform-deploy](https://github.com/jmandrake/cicd_terraform_aws/actions/workflows/deploy.yaml/badge.svg)](https://github.com/jmandrake/cicd_terraform_aws/actions/workflows/deploy.yaml)
 
 Demo project for CICD with Github Actions using Terraform and AWS.
 
-This demo was adapted from the original files (see below for credits) 
+This demo was adapted from the original files (see below for credits) to deploy python Lambda functions to AWS using Terraform template files. No Terraform account or token needed for deployment.
 
 ## Changes:
 
