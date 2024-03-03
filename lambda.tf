@@ -13,9 +13,6 @@ resource "null_resource" "create_zip" {
   }
 }
 
-
-
-
 resource "aws_s3_object" "lambda" {
   bucket = var.aws_s3_bucket
   key    = "api.zip"
